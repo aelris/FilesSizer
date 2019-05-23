@@ -27,7 +27,7 @@ public class FolderSizeNewThread extends FolderSizerEngine implements IFolderSiz
     }
 
     private Long countTotalSize() throws IOException {
-        final long[] totalSize = {0L};
+         AtomicLong totalSize = new AtomicLong(0L);
 
         Files.walk(path)
                 .forEach(path -> {
@@ -42,11 +42,12 @@ public class FolderSizeNewThread extends FolderSizerEngine implements IFolderSiz
                             } catch (IOException e) {
                                 e.printStackTrace();
                             }
-                            totalSizeThread.set(totalSizeThread.get() + size);
+                            long finalSize = size;
+                            totalSizeThread.updateAndGet(v -> v + finalSize);
                         }
                     }).run();
-                    totalSize[0] = totalSize[0] + totalSizeThread.get();
+                    totalSize.updateAndGet(v -> v + totalSizeThread.get());
                 });
-        return totalSize[0];
+        return totalSize.get();
     }
 }

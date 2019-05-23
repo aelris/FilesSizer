@@ -10,10 +10,11 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.*;
-import java.util.concurrent.atomic.AtomicReference;
+import java.util.concurrent.atomic.AtomicLong;
+
 
 public class FolderExecutor extends FolderSizerEngine implements IFolderSizeUtil {
-  AtomicReference<Long> sum = new AtomicReference<>(0L);
+  AtomicLong sum = new AtomicLong(0L);
   Long sumLong = 0L;
   static String pathStat = "";
 
