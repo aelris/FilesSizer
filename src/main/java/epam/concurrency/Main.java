@@ -6,17 +6,17 @@ import epam.concurrency.relealise.OneStreamThread;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Scanner;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class Main {
     public static void main(String[] args) {
-        Path path = Paths.get("C:\\Users\\Dependency\\IdeaProjects\\FilesSizer");
-        ExecutorService ex = Executors.newFixedThreadPool(4);
-        OneStreamThread first = new OneStreamThread(path);
-        FolderProcessor third = new FolderProcessor(ex);
 
-        System.out.println(IFolderSizeUtil.clearView(first.folderSizer()));
+        System.out.println("Please enter path (ex: C:\\Users\\Dependency\\IdeaProjects\\FilesSizer)");
+        Scanner s = new Scanner(System.in);
+        String sc = s.nextLine();
+        Path path = Paths.get(sc);
 //
         System.out.println(third.processFolder(path.toString()));
 
