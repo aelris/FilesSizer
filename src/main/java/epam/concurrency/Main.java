@@ -7,8 +7,7 @@ import epam.concurrency.relealise.OneStreamThread;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Scanner;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+
 
 public class Main {
     public static void main(String[] args) {
