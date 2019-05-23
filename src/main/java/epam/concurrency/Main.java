@@ -1,6 +1,6 @@
 package epam.concurrency;
 
-import epam.concurrency.relealise.FolderProcessor;
+import epam.concurrency.relealise.FolderExecutor;
 import epam.concurrency.relealise.FolderSizeNewThread;
 import epam.concurrency.relealise.OneStreamThread;
 

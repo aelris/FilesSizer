@@ -31,7 +31,7 @@ public class FolderSizeNewThread extends FolderSizerEngine implements IFolderSiz
 
         Files.walk(path)
                 .forEach(path -> {
-                    AtomicReference<Long> totalSizeThread = new AtomicReference<>(0L);
+                    AtomicLong totalSizeThread = new AtomicLong(0L);
 
                     new Thread(() -> {
                         File file = new File(String.valueOf(path));
