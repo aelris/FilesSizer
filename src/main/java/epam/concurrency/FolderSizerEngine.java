@@ -6,6 +6,7 @@ public class FolderSizerEngine {
     public Path path;
 
     public FolderSizerEngine(Path path) {
+
         this.path = path;
     }
 }
