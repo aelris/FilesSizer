@@ -47,21 +47,21 @@ public class FolderExecutor extends FolderSizerEngine implements IFolderSizeUtil
         Long aLong = processFolder(filename);
         sumLong += aLong;
       } else {
+
         Future<Long> future = ex.submit(new CallC(filename));
         futureList.add(future);
+        sum.updateAndGet(v -> {
+            try {
+                return v + future.get();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            }return sum.get();
+        });
+
       }
     }
-
-    futureList.forEach(
-        longFuture -> {
-          if (longFuture != null)
-            try {
-              Long aLong = longFuture.get();
-              sum.updateAndGet(v -> v + aLong);
-            } catch (InterruptedException | ExecutionException e) {
-              e.printStackTrace();
-            }
-        });
 
     ex.shutdown();
     return sum.get();
