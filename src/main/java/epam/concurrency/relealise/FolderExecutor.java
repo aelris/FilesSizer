@@ -14,7 +14,7 @@ import java.util.concurrent.atomic.AtomicLong;
 
 
 public class FolderExecutor extends FolderSizerEngine implements IFolderSizeUtil {
-    AtomicLong sum = new AtomicLong(0L);
+    private AtomicLong sum = new AtomicLong(0L);
 
     public FolderExecutor(Path path) {
         super(path);
@@ -35,7 +35,6 @@ public class FolderExecutor extends FolderSizerEngine implements IFolderSizeUtil
     public Long processFolder(String inputPath) {
         ExecutorService ex = Executors.newFixedThreadPool(4);
         File inputFolder = new File(inputPath);
-        List<Future<Long>> futureList = new ArrayList<>();
 
         for (String filename : inputFolder.list()) {
             filename = inputPath + "\\" + filename;
@@ -46,7 +45,6 @@ public class FolderExecutor extends FolderSizerEngine implements IFolderSizeUtil
             } else {
 
                 Future<Long> future = ex.submit(new CallC(filename));
-                futureList.add(future);
                 sum.updateAndGet(v -> {
                     try {
                         return v + future.get();
