@@ -17,11 +17,15 @@ public class Main {
         String sc = s.nextLine();
         Path path = Paths.get(sc);
 //
-        System.out.println(third.processFolder(path.toString()));
+        IFolderSizeUtil folderSizeUtil1 = new OneStreamThread(path);
+        IFolderSizeUtil folderSizeUtil2 = new FolderSizeNewThread(path);
+        IFolderSizeUtil folderSizeUtil3 = new FolderExecutor(path);
 
-
-        FolderSizeNewThread newThread = new FolderSizeNewThread(path);
-        Long aLong = newThread.folderSizer();
-        System.out.println(IFolderSizeUtil.clearView(aLong));
+        System.out.println("One thread");
+        System.out.println(IFolderSizeUtil.clearViewKB(folderSizeUtil1.folderSizer()));
+        System.out.println("With Threads");
+        System.out.println(IFolderSizeUtil.clearViewKB(folderSizeUtil2.folderSizer()));
+        System.out.println("With Executor");
+        System.out.println(IFolderSizeUtil.clearViewKB(folderSizeUtil3.folderSizer()));
     }
 }
