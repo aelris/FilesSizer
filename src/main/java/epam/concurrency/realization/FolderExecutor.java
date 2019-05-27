@@ -1,4 +1,4 @@
-package epam.concurrency.relealise;
+package epam.concurrency.realization;
 
 import epam.concurrency.FolderSizerEngine;
 import epam.concurrency.IFolderSizeUtil;
@@ -7,14 +7,12 @@ import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicLong;
 
 
 public class FolderExecutor extends FolderSizerEngine implements IFolderSizeUtil {
-    private AtomicLong sum = new AtomicLong(0L);
+   private Long sum = 0L;
 
     public FolderExecutor(Path path) {
         super(path);
@@ -24,55 +22,46 @@ public class FolderExecutor extends FolderSizerEngine implements IFolderSizeUtil
     public Long folderSizer() {
         Long aLong = null;
         try {
-            aLong = processFolder(String.valueOf(super.path));
+            aLong = processFolder(super.path.toString());
         } catch (Exception e) {
             e.printStackTrace();
         }
         return aLong;
     }
 
-
-    public Long processFolder(String inputPath) {
-        ExecutorService ex = Executors.newFixedThreadPool(4);
+    private Long processFolder(String inputPath) {
+        ExecutorService ex = Executors.newFixedThreadPool(8);
         File inputFolder = new File(inputPath);
+        System.out.println(inputFolder.list().length);
+
 
         for (String filename : inputFolder.list()) {
+            System.out.println(filename);
             filename = inputPath + "\\" + filename;
-
+            System.out.println(filename);
             if (new File(filename).isDirectory()) {
                 Long aLong = processFolder(filename);
-                sum.getAndSet(aLong);
-            } else {
-
-                Future<Long> future = ex.submit(new CallC(filename));
-                sum.updateAndGet(v -> {
-                    try {
-                        return v + future.get();
-                    } catch (InterruptedException | ExecutionException ignored) {
-                    }
-                    return sum.get();
-                });
+                sum+= aLong ;
 
             }
+
+            else {
+                Future<Long> future = ex.submit(new CallC(filename));
+               // sum.updateAndGet(v -> {
+                    try {
+                        return sum += future.get();
+                    } catch (InterruptedException | ExecutionException ignored) {
+                        ignored.printStackTrace();
+                        return sum;
+                    }
+              //  });
+            }
+
         }
 
         ex.shutdown();
-        return sum.get();
+        return sum;
     }
 
-    static class CallC implements Callable<Long> {
 
-        String pathIn;
-
-        CallC(String pathIn) {
-            this.pathIn = pathIn;
-        }
-
-        @Override
-        public Long call() throws Exception {
-            Path path = Paths.get(this.pathIn);
-
-            return Files.size(path);
-        }
-    }
 }

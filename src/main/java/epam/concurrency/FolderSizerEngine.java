@@ -3,7 +3,7 @@ package epam.concurrency;
 import java.nio.file.Path;
 
 public class FolderSizerEngine {
-    public Path path;
+    protected Path path;
 
     public FolderSizerEngine(Path path) {
 

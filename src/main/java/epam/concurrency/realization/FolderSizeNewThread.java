@@ -1,4 +1,4 @@
-package epam.concurrency.relealise;
+package epam.concurrency.realization;
 
 import epam.concurrency.FolderSizerEngine;
 import epam.concurrency.IFolderSizeUtil;
@@ -27,7 +27,7 @@ public class FolderSizeNewThread extends FolderSizerEngine implements IFolderSiz
     }
 
     private Long countTotalSize() throws IOException {
-         AtomicLong totalSize = new AtomicLong(0L);
+        AtomicLong totalSize = new AtomicLong(0L);
 
         Files.walk(path)
                 .forEach(path -> {
@@ -35,13 +35,16 @@ public class FolderSizeNewThread extends FolderSizerEngine implements IFolderSiz
 
                     new Thread(() -> {
                         File file = new File(String.valueOf(path));
+
                         if (!file.isDirectory()) {
                             long size = 0;
+
                             try {
                                 size = Files.size(path);
                             } catch (IOException e) {
                                 e.printStackTrace();
                             }
+
                             long finalSize = size;
                             totalSizeThread.updateAndGet(v -> v + finalSize);
                         }

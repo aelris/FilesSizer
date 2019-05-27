@@ -1,4 +1,4 @@
-package epam.concurrency.relealise;
+package epam.concurrency.realization.OneThread;
 
 import epam.concurrency.FolderSizerEngine;
 import epam.concurrency.IFolderSizeUtil;
